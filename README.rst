@@ -35,6 +35,8 @@ This is easily achieved by downloading
 Usage Example
 =============
 
+.. code-block:: python
+
   import time
   from makers_remote_control import remote_control
 
@@ -57,6 +59,7 @@ Usage Example
       print("Something for Six")
 
     time.sleep(0.1)
+
 
 Contributing
 ============
