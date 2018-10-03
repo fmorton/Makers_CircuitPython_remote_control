@@ -13,13 +13,20 @@ Introduction
     :target: https://travis-ci.org/fmorton/Makers_CircuitPython_remote_control
     :alt: Build Status
 
-.. todo:: Describe what the library does.
+CircuitPython helper for remote controls
+
+Examples of products to use this library with:
+
+* `Circuit Playground Express <https://www.adafruit.com/product/3333>`_
+* `Mini Remote Control <https://www.adafruit.com/product/389>`_
+
 
 Dependencies
 =============
 This driver depends on:
 
 * `Adafruit CircuitPython <https://github.com/adafruit/circuitpython>`_
+* `Adafruit CircuitPython drivers for IR remote send and receive <https://github.com/adafruit/Adafruit_CircuitPython_IRRemote>`_
 
 Please ensure all dependencies are available on the CircuitPython filesystem.
 This is easily achieved by downloading
@@ -28,7 +35,28 @@ This is easily achieved by downloading
 Usage Example
 =============
 
-.. todo:: Add a quick, simple example. It and other examples should live in the examples folder and be included in docs/examples.rst.
+  import time
+  from makers_remote_control import remote_control
+
+  remote_control = remote_control(debug=False)
+
+  while True:
+    code = remote_control.code()
+
+    if(code == remote_control.CODE_UP):
+      print("Forward")
+    elif(code == remote_control.CODE_DOWN):
+      print("Backwards")
+    elif(code == remote_control.CODE_LEFT):
+      print("Left")
+    elif(code == remote_control.CODE_RIGHT):
+      print("Right")
+    elif(code == 4):
+      print("Something for Four")
+    elif(code == 6):
+      print("Something for Six")
+
+    time.sleep(0.1)
 
 Contributing
 ============

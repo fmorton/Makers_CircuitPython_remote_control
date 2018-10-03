@@ -23,7 +23,7 @@
 `Makers_remote_control`
 ====================================================
 
-.. todo:: Describe what the module does
+.. CircuitPython helper for remote controls
 
 * Author(s): Frank Morton for Neighborhood Makers Inc
 
@@ -32,8 +32,8 @@ Implementation Notes
 
 **Hardware:**
 
-.. todo:: Add links to any specific hardware product page(s), or category page(s). Use unordered list & hyperlink rST
-   inline format: "* `Link Text <url>`_"
+* `Circuit Playground Express <https://www.adafruit.com/product/3333>`_
+* `Mini Remote Control <https://www.adafruit.com/product/389>`_
 
 **Software and Dependencies:**
 
@@ -54,9 +54,31 @@ __repo__ = "https://github.com/fmorton/Makers_CircuitPython_remote_control.git"
 
 
 """
+  Demo code for Circuit Playground Express:
+
+  import time
   from makers_remote_control import remote_control
-  remote = remote_control(debug=False)
-  remote.code()
+
+  remote_control = remote_control(debug=False)
+
+  while True:
+    code = remote_control.code()
+
+    if(code == remote_control.CODE_UP):
+      print("Forward")
+    elif(code == remote_control.CODE_DOWN):
+      print("Backwards")
+    elif(code == remote_control.CODE_LEFT):
+      print("Left")
+    elif(code == remote_control.CODE_RIGHT):
+      print("Right")
+    elif(code == 4):
+      print("Something for Four")
+    elif(code == 6):
+      print("Something for Six")
+
+    time.sleep(0.1)
+
 
   Adafruit Mini Remote Control IR Mapping and Mask
   1: [255, 2, 247, 8]             63240
