@@ -45,9 +45,9 @@ Implementation Notes
 
 """
 
-import adafruit_irremote
 import board
 import pulseio
+import adafruit_irremote
 
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/fmorton/Makers_CircuitPython_remote_control.git"
@@ -56,8 +56,8 @@ __repo__ = "https://github.com/fmorton/Makers_CircuitPython_remote_control.git"
 """
   Demo code for Circuit Playground Express:
 
-  import makers_remote_control
   import time
+  import makers_remote_control
 
   remote_control = makers_remote_control.RemoteControl(debug=True)
 
