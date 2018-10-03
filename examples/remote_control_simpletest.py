@@ -1,7 +1,7 @@
 import makers_remote_control
 import time
 
-remote_control = makers_remote_control.RemoteControl(debug=True)
+remote_control = makers_remote_control.RemoteControl(debug=False)
 
 while True:
     code = remote_control.code()

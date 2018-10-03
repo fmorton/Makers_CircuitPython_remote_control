@@ -160,25 +160,32 @@ class RemoteControl:
         try:
             pulses = self.decoder.read_pulses(self.pulsein, blocking=blocking)
 
-            if pulses is None: return RemoteControl.CODE_UNKNOWN
+            if pulses is None:
+                return RemoteControl.CODE_UNKNOWN
 
-            if self.debug: RemoteControl.debug_print(len(pulses), "pulses:", pulses)
+            if self.debug:
+                RemoteControl.debug_print(len(pulses), "pulses:", pulses)
 
             code = self.decoder.decode_bits(pulses, debug=False)
 
-            if self.debug: RemoteControl.debug_print("decoded:", code)
+            if self.debug:
+                RemoteControl.debug_print("decoded:", code)
 
-            if((code[0] != 255) or (code[1] != 2)): return RemoteControl.CODE_UNKNOWN
+            if((code[0] != 255) or (code[1] != 2)):
+                return RemoteControl.CODE_UNKNOWN
 
             code_mask = (code[2] << 8) | code[3]
 
             return RemoteControl.CODE_MASK.get(code_mask, RemoteControl.CODE_UNKNOWN)
         except adafruit_irremote.IRNECRepeatException:
-            if self.debug: RemoteControl.debug_print("repeat exception")
+            if self.debug:
+                RemoteControl.debug_print("repeat exception")
             return RemoteControl.CODE_UNKNOWN
         except adafruit_irremote.IRDecodeException as exception:
-            if self.debug: RemoteControl.debug_print("failed to decode:", exception.args)
+            if self.debug:
+                RemoteControl.debug_print("failed to decode:", exception.args)
             return RemoteControl.CODE_UNKNOWN
         except MemoryError as exception:
-            if self.debug: RemoteControl.debug_print("memory error:", exception.args)
+            if self.debug:
+                RemoteControl.debug_print("memory error:", exception.args)
             return RemoteControl.CODE_UNKNOWN
