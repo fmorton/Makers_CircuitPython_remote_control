@@ -59,7 +59,7 @@ __repo__ = "https://github.com/fmorton/Makers_CircuitPython_remote_control.git"
   import time
   import makers_remote_control
 
-  remote_control = makers_remote_control.RemoteControl(debug=True)
+  remote_control = makers_remote_control.RemoteControl(debug=False)
 
   while True:
       code = remote_control.code()
