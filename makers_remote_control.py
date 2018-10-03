@@ -45,8 +45,8 @@ Implementation Notes
 
 """
 
-import board
 import pulseio
+import board
 import adafruit_irremote
 
 __version__ = "0.0.0-auto.0"
