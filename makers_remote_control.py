@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 """
-`Makers_remote_control`
+`makers_remote_control`
 ====================================================
 
 .. CircuitPython helper for remote controls
@@ -56,28 +56,28 @@ __repo__ = "https://github.com/fmorton/Makers_CircuitPython_remote_control.git"
 """
   Demo code for Circuit Playground Express:
 
+  import makers_remote_control
   import time
-  from makers_remote_control import remote_control
 
-  remote_control = remote_control(debug=False)
+  remote_control = makers_remote_control.RemoteControl(debug=True)
 
   while True:
-    code = remote_control.code()
+      code = remote_control.code()
 
-    if(code == remote_control.CODE_UP):
-      print("Forward")
-    elif(code == remote_control.CODE_DOWN):
-      print("Backwards")
-    elif(code == remote_control.CODE_LEFT):
-      print("Left")
-    elif(code == remote_control.CODE_RIGHT):
-      print("Right")
-    elif(code == 4):
-      print("Something for Four")
-    elif(code == 6):
-      print("Something for Six")
+      if(code == remote_control.CODE_UP):
+          print("Forward")
+      elif(code == remote_control.CODE_DOWN):
+          print("Backwards")
+      elif(code == remote_control.CODE_LEFT):
+          print("Left")
+      elif(code == remote_control.CODE_RIGHT):
+          print("Right")
+      elif(code == 4):
+          print("Something for Four")
+      elif(code == 6):
+          print("Something for Six")
 
-    time.sleep(0.1)
+      time.sleep(0.1)
 
 
   Adafruit Mini Remote Control IR Mapping and Mask
@@ -118,6 +118,29 @@ class RemoteControl:
     CODE_VOL_PLUS = 137
     CODE_PLAY_PAUSE = 138
     CODE_UNKNOWN = -1
+    CODE_MASK = {
+        53040: 0,
+        63240: 1,
+        30600: 2,
+        46920: 3,
+        55080: 4,
+        22440: 5,
+        38760: 6,
+        59160: 7,
+        26520: 8,
+        42840: 9,
+        24480: CODE_UP,
+        20400: CODE_DOWN,
+        44880: CODE_RIGHT,
+        61200: CODE_LEFT,
+        28560: CODE_ENTER,
+        57120: CODE_SETUP,
+        40800: CODE_STOP_MODE,
+        36720: CODE_BACK,
+        65280: CODE_VOL_MINUS,
+        48960: CODE_VOL_PLUS,
+        32640: CODE_PLAY_PAUSE
+    }
 
 
     def __init__(self, debug=False):
@@ -137,47 +160,25 @@ class RemoteControl:
         try:
             pulses = self.decoder.read_pulses(self.pulsein, blocking=blocking)
 
-            if pulses is None: return self.CODE_UNKNOWN
+            if pulses is None: return RemoteControl.CODE_UNKNOWN
 
-            if self.debug: self.debug_print(len(pulses), "pulses:", pulses)
+            if self.debug: RemoteControl.debug_print(len(pulses), "pulses:", pulses)
 
             code = self.decoder.decode_bits(pulses, debug=False)
 
-            if self.debug: self.debug_print("decoded:", code)
+            if self.debug: RemoteControl.debug_print("decoded:", code)
 
-            if((code[0] != 255) or (code[1] != 2)): return self.CODE_UNKNOWN
+            if((code[0] != 255) or (code[1] != 2)): return RemoteControl.CODE_UNKNOWN
 
             code_mask = (code[2] << 8) | code[3]
 
-            if code_mask == 53040: return 0
-            if code_mask == 63240: return 1
-            if code_mask == 30600: return 2
-            if code_mask == 46920: return 3
-            if code_mask == 55080: return 4
-            if code_mask == 22440: return 5
-            if code_mask == 38760: return 6
-            if code_mask == 59160: return 7
-            if code_mask == 26520: return 8
-            if code_mask == 42840: return 9
-            if code_mask == 24480: return self.CODE_UP
-            if code_mask == 20400: return self.CODE_DOWN
-            if code_mask == 44880: return self.CODE_RIGHT
-            if code_mask == 61200: return self.CODE_LEFT
-            if code_mask == 28560: return self.CODE_ENTER
-            if code_mask == 57120: return self.CODE_SETUP
-            if code_mask == 40800: return self.CODE_STOP_MODE
-            if code_mask == 36720: return self.CODE_BACK
-            if code_mask == 65280: return self.CODE_VOL_MINUS
-            if code_mask == 48960: return self.CODE_VOL_PLUS
-            if code_mask == 32640: return self.CODE_PLAY_PAUSE
-
-            return self.CODE_UNKNOWN
+            return RemoteControl.CODE_MASK.get(code_mask, RemoteControl.CODE_UNKNOWN)
         except adafruit_irremote.IRNECRepeatException:
-            if self.debug: self.debug_print("repeat exception")
-            return self.CODE_UNKNOWN
+            if self.debug: RemoteControl.debug_print("repeat exception")
+            return RemoteControl.CODE_UNKNOWN
         except adafruit_irremote.IRDecodeException as exception:
-            if self.debug: self.debug_print("failed to decode:", exception.args)
-            return self.CODE_UNKNOWN
+            if self.debug: RemoteControl.debug_print("failed to decode:", exception.args)
+            return RemoteControl.CODE_UNKNOWN
         except MemoryError as exception:
-            if self.debug: self.debug_print("memory error:", exception.args)
-            return self.CODE_UNKNOWN
+            if self.debug: RemoteControl.debug_print("memory error:", exception.args)
+            return RemoteControl.CODE_UNKNOWN
