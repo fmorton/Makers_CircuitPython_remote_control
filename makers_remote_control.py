@@ -105,18 +105,18 @@ __repo__ = "https://github.com/fmorton/Makers_CircuitPython_remote_control.git"
 """
 
 class remote_control:
-  CODE_UP=128
-  CODE_DOWN=129
-  CODE_RIGHT=130
-  CODE_LEFT=131
-  CODE_ENTER=132
-  CODE_SETUP=133
-  CODE_STOP_MODE=134
-  CODE_BACK=135
-  CODE_VOL_MINUS=136
-  CODE_VOL_PLUS=137
-  CODE_PLAY_PAUSE=138
-  CODE_UNKNOWN=-1
+  CODE_UP = 128
+  CODE_DOWN = 129
+  CODE_RIGHT = 130
+  CODE_LEFT = 131
+  CODE_ENTER = 132
+  CODE_SETUP = 133
+  CODE_STOP_MODE = 134
+  CODE_BACK = 135
+  CODE_VOL_MINUS = 136
+  CODE_VOL_PLUS = 137
+  CODE_PLAY_PAUSE = 138
+  CODE_UNKNOWN = -1
 
 
   def __init__(self, debug=False):
