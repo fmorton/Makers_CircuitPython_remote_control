@@ -45,9 +45,9 @@ Implementation Notes
 
 """
 
-import pulseio
 import board
 import adafruit_irremote
+import pulseio
 
 __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/fmorton/Makers_CircuitPython_remote_control.git"
