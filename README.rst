@@ -2,7 +2,7 @@ Introduction
 ============
 
 .. image:: https://readthedocs.org/projects/makers-circuitpython-remote_control/badge/?version=latest
-    :target: https://circuitpython-helper-for-remote-controls.readthedocs.io/en/latest/
+    :target: https://makers-circuitpython-remote-control.readthedocs.io/en/latest/
     :alt: Documentation Status
 
 .. image:: https://img.shields.io/discord/327254708534116352.svg
