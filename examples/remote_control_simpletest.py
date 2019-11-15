@@ -6,7 +6,7 @@ remote_control = makers_remote_control.RemoteControl(debug=False)
 while True:
     code = remote_control.code()
 
-    if code == remote_control.UP:
+    if code == remote_control.UP_:
         print("Faster")
     elif code == remote_control.DOWN:
         print("Slower")

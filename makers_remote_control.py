@@ -83,7 +83,7 @@ __repo__ = "https://github.com/fmorton/Makers_CircuitPython_remote_control.git"
 class RemoteControl:
     """Remote control helper class"""
     UNKNOWN = -1
-    UP = 128
+    UP_ = 128
     DOWN = 129
     RIGHT = 130
     LEFT = 131
@@ -109,7 +109,7 @@ class RemoteControl:
         59160: 7,
         26520: 8,
         42840: 9,
-        24480: UP,
+        24480: UP_,
         20400: DOWN,
         44880: RIGHT,
         61200: LEFT,
@@ -132,8 +132,8 @@ class RemoteControl:
         47992: RIGHT,
         41977: DOWN,
         43897: DOWN,
-        45817: UP,
-        47737: UP,
+        45817: UP_,
+        47737: UP_,
 
         #  lego power remote control (middle switch in position 2)
         30059: LEFT_BUTTON,
@@ -144,8 +144,8 @@ class RemoteControl:
         43880: LEFT,
         45800: RIGHT,
         47720: RIGHT,
-        46057: UP,
-        47977: UP,
+        46057: UP_,
+        47977: UP_,
         41705: DOWN,
         43625: DOWN,
 
@@ -158,8 +158,8 @@ class RemoteControl:
         43096: LEFT,
         45528: RIGHT,
         47448: RIGHT,
-        45273: UP,
-        47193: UP,
+        45273: UP_,
+        47193: UP_,
         41433: DOWN,
         43353: DOWN,
 
@@ -172,8 +172,8 @@ class RemoteControl:
         43336: LEFT,
         45256: RIGHT,
         47176: RIGHT,
-        45513: UP,
-        47433: UP,
+        45513: UP_,
+        47433: UP_,
         41161: DOWN,
         43081: DOWN,
 
@@ -183,7 +183,7 @@ class RemoteControl:
         49066: MENU,
         61354: LEFT,
         8106: RIGHT,
-        12202: UP,
+        12202: UP_,
         20394: DOWN,
     }
 
@@ -192,10 +192,12 @@ class RemoteControl:
         self.decoder = adafruit_irremote.GenericDecode()
         self.debug = debug
 
-    @classmethod
-    def debug_print(cls, *message):
+    #@ classmethod
+    #def debug_print(cls, debug, *message):
+    def debug_print(self, *message):
         """Print a debug message"""
-        print("remote_control:", *message)
+        if self.debug:
+            print("remote_control:", *message)
 
     def code(self, blocking=False):
         """Return the decoded remote control code value"""
@@ -205,21 +207,19 @@ class RemoteControl:
             if pulses is None:
                 return RemoteControl.UNKNOWN
 
-            if self.debug:
-                RemoteControl.debug_print(len(pulses), "pulses:", pulses)
+            self.debug_print(len(pulses), "pulses:", pulses)
 
             code = self.decoder.decode_bits(pulses)
 
-            if self.debug:
-                RemoteControl.debug_print("decoded:", code)
+            self.debug_print("decoded:", code)
 
-            if (len(code) == 2):
+            if len(code) == 2:
                 #  lego power functions ir speed remote control
                 code_mask = (code[1] << 8) | code[0]
             elif (len(code) == 4) & (code[0] == 136) & (code[1] == 30):
                 #  apple tv remote control
                 code_mask = (code[2] << 8) | code[3]
-            elif((code[0] == 255) or (code[1] == 2)):
+            elif (code[0] == 255) or (code[1] == 2):
                 #  adafruit mini remote control
                 code_mask = (code[2] << 8) | code[3]
             else:
@@ -227,18 +227,12 @@ class RemoteControl:
 
             return RemoteControl.CODE.get(code_mask, RemoteControl.UNKNOWN)
         except adafruit_irremote.IRNECRepeatException:
-            if self.debug:
-                RemoteControl.debug_print("repeat exception")
-            return RemoteControl.UNKNOWN
+            self.debug_print("repeat exception")
         except adafruit_irremote.IRDecodeException as exception:
-            if self.debug:
-                RemoteControl.debug_print("failed to decode:", exception.args)
-            return RemoteControl.UNKNOWN
+            self.debug_print("failed to decode:", exception.args)
         except IndexError as exception:
-            if self.debug:
-                RemoteControl.debug_print("index error:", exception.args)
-            return RemoteControl.UNKNOWN
+            self.debug_print("index error:", exception.args)
         except MemoryError as exception:
-            if self.debug:
-                RemoteControl.debug_print("memory error:", exception.args)
-            return RemoteControl.UNKNOWN
+            self.debug_print("memory error:", exception.args)
+
+        return RemoteControl.UNKNOWN
