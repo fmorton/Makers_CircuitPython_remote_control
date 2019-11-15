@@ -45,18 +45,20 @@ Usage Example
   while True:
       code = remote_control.code()
 
-      if code == remote_control.CODE_UP:
-          print("Forward")
-      elif code == remote_control.CODE_DOWN:
-          print("Backwards")
-      elif code == remote_control.CODE_LEFT:
+      if code == remote_control.UP:
+          print("Faster")
+      elif code == remote_control.DOWN:
+          print("Slower")
+      elif code == remote_control.LEFT:
           print("Left")
-      elif code == remote_control.CODE_RIGHT:
+      elif code == remote_control.RIGHT:
           print("Right")
       elif code == 4:
           print("Something for Four")
       elif code == 6:
           print("Something for Six")
+      elif code != remote_control.UNKNOWN:
+          print("Code: ", code)
 
       time.sleep(0.1)
 

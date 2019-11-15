@@ -64,13 +64,13 @@ __repo__ = "https://github.com/fmorton/Makers_CircuitPython_remote_control.git"
   while True:
       code = remote_control.code()
 
-      if(code == remote_control.CODE_UP):
+      if(code == remote_control.UP):
           print("Forward")
-      elif(code == remote_control.CODE_DOWN):
+      elif(code == remote_control.DOWN):
           print("Backwards")
-      elif(code == remote_control.CODE_LEFT):
+      elif(code == remote_control.LEFT):
           print("Left")
-      elif(code == remote_control.CODE_RIGHT):
+      elif(code == remote_control.RIGHT):
           print("Right")
       elif(code == 4):
           print("Something for Four")
@@ -78,47 +78,27 @@ __repo__ = "https://github.com/fmorton/Makers_CircuitPython_remote_control.git"
           print("Something for Six")
 
       time.sleep(0.1)
-
-
-  Adafruit Mini Remote Control IR Mapping and Mask
-  1: [255, 2, 247, 8]             63240
-  2: [255, 2, 119, 136]           30600
-  3: [255, 2, 183, 72]            46920
-  4: [255, 2, 215, 40]            55080
-  5: [255, 2, 87, 168]            22440
-  6: [255, 2, 151, 104]           38760
-  7: [255, 2, 231, 24]            59160
-  8: [255, 2, 103, 152]           26520
-  9: [255, 2, 167, 88]            42840
-  0: [255, 2, 207, 48]            53040
-  ^ : [255, 2, 95, 160]           24480
-  v : [255, 2, 79, 176]           20400
-  > : [255, 2, 175, 80]           44880
-  < : [255, 2, 239, 16]           61200
-  Enter: [255, 2, 111, 144]       28560
-  Setup: [255, 2, 223, 32]        57120
-  Stop/Mode: [255, 2, 159, 96]    40800
-  Back: [255, 2, 143, 112]        36720
-  Vol - : [255, 2, 255, 0]        65280
-  Vol + : [255, 2, 191, 64]       48960
-  Play/Pause: [255, 2, 127, 128]  32640
 """
 
 class RemoteControl:
     """Remote control helper class"""
-    CODE_UP = 128
-    CODE_DOWN = 129
-    CODE_RIGHT = 130
-    CODE_LEFT = 131
-    CODE_ENTER = 132
-    CODE_SETUP = 133
-    CODE_STOP_MODE = 134
-    CODE_BACK = 135
-    CODE_VOL_MINUS = 136
-    CODE_VOL_PLUS = 137
-    CODE_PLAY_PAUSE = 138
-    CODE_UNKNOWN = -1
-    CODE_MASK = {
+    UNKNOWN = -1
+    UP = 128
+    DOWN = 129
+    RIGHT = 130
+    LEFT = 131
+    ENTER = 132
+    SETUP = 133
+    STOP = 134
+    BACK = 135
+    VOL_MINUS = 136
+    VOL_PLUS = 137
+    PLAY_PAUSE = 138
+    LEFT_BUTTON = 139
+    RIGHT_BUTTON = 140
+    MENU = 141
+    CODE = {
+        #  adafruit mini remote control
         53040: 0,
         63240: 1,
         30600: 2,
@@ -129,31 +109,93 @@ class RemoteControl:
         59160: 7,
         26520: 8,
         42840: 9,
-        24480: CODE_UP,
-        20400: CODE_DOWN,
-        44880: CODE_RIGHT,
-        61200: CODE_LEFT,
-        28560: CODE_ENTER,
-        57120: CODE_SETUP,
-        40800: CODE_STOP_MODE,
-        36720: CODE_BACK,
-        65280: CODE_VOL_MINUS,
-        48960: CODE_VOL_PLUS,
-        32640: CODE_PLAY_PAUSE
-    }
+        24480: UP,
+        20400: DOWN,
+        44880: RIGHT,
+        61200: LEFT,
+        28560: ENTER,
+        57120: SETUP,
+        40800: STOP,
+        36720: BACK,
+        65280: VOL_MINUS,
+        48960: VOL_PLUS,
+        32640: PLAY_PAUSE,
 
+        #  lego power remote control (middle switch in position 1 (top)
+        29819: LEFT_BUTTON,
+        31995: LEFT_BUTTON,
+        32250: RIGHT_BUTTON,
+        30074: RIGHT_BUTTON,
+        41720: LEFT,
+        43640: LEFT,
+        46072: RIGHT,
+        47992: RIGHT,
+        41977: DOWN,
+        43897: DOWN,
+        45817: UP,
+        47737: UP,
+
+        #  lego power remote control (middle switch in position 2)
+        30059: LEFT_BUTTON,
+        32235: LEFT_BUTTON,
+        29802: RIGHT_BUTTON,
+        31978: RIGHT_BUTTON,
+        41960: LEFT,
+        43880: LEFT,
+        45800: RIGHT,
+        47720: RIGHT,
+        46057: UP,
+        47977: UP,
+        41705: DOWN,
+        43625: DOWN,
+
+        #  lego power remote control (middle switch in position 3)
+        32475: LEFT_BUTTON,
+        30299: LEFT_BUTTON,
+        30554: RIGHT_BUTTON,
+        32730: RIGHT_BUTTON,
+        41176: LEFT,
+        43096: LEFT,
+        45528: RIGHT,
+        47448: RIGHT,
+        45273: UP,
+        47193: UP,
+        41433: DOWN,
+        43353: DOWN,
+
+        #  lego power remote control (middle switch in position 4 (bottom)
+        30539: LEFT_BUTTON,
+        32715: LEFT_BUTTON,
+        30282: RIGHT_BUTTON,
+        32458: RIGHT_BUTTON,
+        41416: LEFT,
+        43336: LEFT,
+        45256: RIGHT,
+        47176: RIGHT,
+        45513: UP,
+        47433: UP,
+        41161: DOWN,
+        43081: DOWN,
+
+        #  apple tv remote control (old style silver)
+        17834: ENTER,
+        34218: PLAY_PAUSE,
+        49066: MENU,
+        61354: LEFT,
+        8106: RIGHT,
+        12202: UP,
+        20394: DOWN,
+    }
 
     def __init__(self, debug=False):
         self.pulsein = pulseio.PulseIn(board.REMOTEIN, maxlen=120, idle_state=True)
         self.decoder = adafruit_irremote.GenericDecode()
         self.debug = debug
 
-
     @classmethod
     def debug_print(cls, *message):
         """Print a debug message"""
         print("remote_control:", *message)
-
 
     def code(self, blocking=False):
         """Return the decoded remote control code value"""
@@ -161,31 +203,42 @@ class RemoteControl:
             pulses = self.decoder.read_pulses(self.pulsein, blocking=blocking)
 
             if pulses is None:
-                return RemoteControl.CODE_UNKNOWN
+                return RemoteControl.UNKNOWN
 
             if self.debug:
                 RemoteControl.debug_print(len(pulses), "pulses:", pulses)
 
-            code = self.decoder.decode_bits(pulses, debug=False)
+            code = self.decoder.decode_bits(pulses)
 
             if self.debug:
                 RemoteControl.debug_print("decoded:", code)
 
-            if((code[0] != 255) or (code[1] != 2)):
-                return RemoteControl.CODE_UNKNOWN
+            if (len(code) == 2):
+                #  lego power functions ir speed remote control
+                code_mask = (code[1] << 8) | code[0]
+            elif (len(code) == 4) & (code[0] == 136) & (code[1] == 30):
+                #  apple tv remote control
+                code_mask = (code[2] << 8) | code[3]
+            elif((code[0] == 255) or (code[1] == 2)):
+                #  adafruit mini remote control
+                code_mask = (code[2] << 8) | code[3]
+            else:
+                return RemoteControl.UNKNOWN
 
-            code_mask = (code[2] << 8) | code[3]
-
-            return RemoteControl.CODE_MASK.get(code_mask, RemoteControl.CODE_UNKNOWN)
+            return RemoteControl.CODE.get(code_mask, RemoteControl.UNKNOWN)
         except adafruit_irremote.IRNECRepeatException:
             if self.debug:
                 RemoteControl.debug_print("repeat exception")
-            return RemoteControl.CODE_UNKNOWN
+            return RemoteControl.UNKNOWN
         except adafruit_irremote.IRDecodeException as exception:
             if self.debug:
                 RemoteControl.debug_print("failed to decode:", exception.args)
-            return RemoteControl.CODE_UNKNOWN
+            return RemoteControl.UNKNOWN
+        except IndexError as exception:
+            if self.debug:
+                RemoteControl.debug_print("index error:", exception.args)
+            return RemoteControl.UNKNOWN
         except MemoryError as exception:
             if self.debug:
                 RemoteControl.debug_print("memory error:", exception.args)
-            return RemoteControl.CODE_UNKNOWN
+            return RemoteControl.UNKNOWN
