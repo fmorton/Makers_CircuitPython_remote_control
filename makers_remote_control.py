@@ -185,6 +185,14 @@ class RemoteControl:
         8106: RIGHT,
         12202: UP_,
         20394: DOWN,
+
+        # apple tv remote control (old old style white plastic)
+        57224: PLAY_PAUSE,
+        12168: VOL_PLUS,
+        20360: VOL_MINUS,
+        61320: LEFT,
+        8072: RIGHT,
+        49032: MENU
     }
 
     def __init__(self, debug=False):
